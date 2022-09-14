@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { format } from 'date-fns';
 
 function App() {
   const [data, setData] = useState({});
@@ -20,12 +21,21 @@ function App() {
   const dateMe = (value) => {
     let arr = value.split(' ');
     let d = arr[0];
-    return d;
+    let finalDate = formatDate(d);
+    return finalDate;
   };
   const decimal = (value) => {
     const decimalPrice = parseFloat(value);
     const finalval = decimalPrice.toFixed(2);
     return finalval;
+  };
+  const formatDate = (userDate) => {
+    let splitDates = userDate.split('-');
+    let formatted = format(
+      new Date(splitDates[0], splitDates[1] - 1, splitDates[2]),
+      'MM/dd/yyyy'
+    );
+    return formatted;
   };
 
   return (
@@ -51,13 +61,13 @@ function App() {
         ) : null}
         <div className="stockPrice">
           {data.values ? (
-            <h4 className="date">Open: {decimal(data.values[0].open)}</h4>
+            <h4 className="date">Open: ${decimal(data.values[0].open)}</h4>
           ) : null}
           {data.values ? (
-            <h4 className="date">High: {decimal(data.values[0].high)}</h4>
+            <h4 className="date">High: ${decimal(data.values[0].high)}</h4>
           ) : null}
           {data.values ? (
-            <h4 className="date">Close: {decimal(data.values[0].open)}</h4>
+            <h4 className="date">Close: ${decimal(data.values[0].open)}</h4>
           ) : null}
         </div>
       </div>
